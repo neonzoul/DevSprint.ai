@@ -1,0 +1,1 @@
+// จัดการ DOM, fetch API
