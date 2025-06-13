@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <title>About DevSprint AI Project</title>
+    </head>
+    <body>
+        <h1>About DevSprint AI Project</h1>
+
+        <h2>Project Overview</h2>
+        <div>
+            <p>
+                <strong>DevSprint AI</strong> is a productivity tool that
+                combines chat-driven workflow, task management, and Google
+                Calendar integration. The MVP is built with
+                <b>HTML + Vanilla JS</b> on the frontend and
+                <b>Node.js + Express</b> on the backend, focusing on rapid
+                iteration and minimal setup.
+            </p>
+        </div>
+
+        <details>
+            <summary>🎨UX/UI Concept</summary>
+            <ol>
+                <li>
+                    <b>Top Bar:</b> Minimal logo (DevSprint AI), user profile
+                    (Google), and settings/logout menu.
+                    <ul>
+                        <li>
+                            ซ้าย: โลโก้ “DevSprint AI” (มินิมอล ไอคอนสปรินต์)
+                        </li>
+                        <li>
+                            ขวา: รูปโปรไฟล์ Google, ชื่อผู้ใช้, ปุ่มเมนูเล็กๆ
+                            (Settings / Logout)
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <b>Main Area:</b> Chat window (user right, AI left, modern
+                    chat bubbles), input bar with <code>＋ Task</code> button.
+
+                    <ul>
+                        <li>Chat Window (80% ความกว้าง)</li>
+                        <ul>
+                            <li>ฟองข้อความสลับฟ้า/เทาสวยๆ แบบแอปแชททั่วไป</li>
+                            <li>
+                                ข้อความ user อยู่ทางขวา, ข้อความ AI อยู่ทางซ้าย
+                            </li>
+                            <li>
+                                ขอบโค้งมน (border-radius: 12px) กับ shadow เบาๆ
+                                เพื่อให้รู้สึกลอยเหนือพื้น
+                            </li>
+                        </ul>
+                    </ul>
+                    <ul>
+                        <li>Input Bar</li>
+                        <ul>
+                            <li>
+                                ล่างสุด: กล่องข้อความกว้างเต็มความกว้าง
+                                พร้อมปุ่ม “Send” ชัดเจน
+                            </li>
+                            <li>
+                                ถัดไปมีปุ่ม <code>＋ Task</code> สีฟ้าเล็กๆ
+                                สำหรับสร้างงานใหม่ด้วยคำสั่งพิเศษ
+                            </li>
+                        </ul>
+                    </ul>
+                </li>
+                <li>
+                    <b>Right Sidebar:</b> Today's tasks, quick actions (log
+                    done, reschedule), calendar sync status.
+                    <ul>
+                        <li>Header: “Today’s Tasks” พร้อมไอคอนปฏิทินเล็ก</li>
+                        <li>
+                            List of Tasks:
+                            <ul>
+                                <li>
+                                    แต่ละบรรทัดเป็นการ์ดสั้นๆ มี ✓ checkbox,
+                                    ชื่อ task, เวลา due
+                                </li>
+                                <li>
+                                    ถ้า AI เพิ่ง split มา ให้ไฮไลต์พื้นหลังจาง ๆ
+                                    ว่า “new”
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Quick Actions:
+                            <ul>
+                                <li>
+                                    ปุ่ม “Log Done” ข้างๆ แต่ละ task
+                                    (กดแล้วส่งเข้า chat → AI ตอบกลับอัตโนมัติ)
+                                </li>
+                                <li>
+                                    ปุ่ม “Reschedule” เล็กๆ ให้เลื่อน due date
+                                    โดย popup date-picker
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Calendar Sync Status:
+                            <ul>
+                                <li>
+                                    ไอคอนกราฟิกปฏิทิน พร้อมข้อความสั้นๆ “Synced”
+                                    (สีเขียว) หรือ “Retry” (สีส้ม ถ้ามี error)
+                                </li>
+                                <li>
+                                    เมื่อ hover จะแสดง tooltip “Last sync:
+                                    14:32”
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <b>Floating Help:</b> Bottom-right help button for "Tip of
+                    the Day".
+                    <ul>
+                        <li>มุมล่างขวา มีปุ่มไอคอน “?”</li>
+                        <li>
+                            คลิกแล้ว AI Agent จะเสนอ “Tip of the Day” เช่น
+                            “ลองพิมพ์ ‘today’s plan’ ดูสิ”
+                        </li>
+                    </ul>
+                </li>
+            </ol>
+            <h4>
+                <b>Core Principles:</b> One-screen focus, minimal controls,
+                instant feedback, progressive disclosure, mobile-first
+                responsive layout.
+                <ul>
+                    <li>
+                        One-Screen Focus: ไม่ต้องสลับหน้า เดินงานผ่าน chat กับ
+                        sidebar เดียวจบ
+                    </li>
+                    <li>
+                        Minimal Controls: ปุ่มน้อย แต่ชัดเจน
+                        ทำให้ไม่รู้สึกหลงทาง
+                    </li>
+                    <li>
+                        Instant Feedback: ทุกครั้งที่กด log หรือ reschedule
+                        ให้มี toast แจ้ง “Done!” หรือ “Error” ทันที
+                    </li>
+                    <li>
+                        Progressive Disclosure: ฟีเจอร์ซ้อนใน chat หรือ sidebar
+                        ไม่งอกเยอะจนรก แต่พร้อมโผล่เมื่อจำเป็น
+                    </li>
+                    <li>
+                        Mobile-First: เลย์เอาต์ปรับตัวแบบ responsive — บนมือถือ
+                        chat กับ tasks สลับซ่อน-โชว์ด้วย tab เล็กๆ
+                    </li>
+                </ul>
+            </h4>
+            <h4>
+                🌱 โฟกัสจุดไหนก่อน?
+                <ul>
+                    <li>
+                        ถ้าคุณอยาก โฟกัสที่ Chat UX มากกว่า Sidebar ก็ลด sidebar
+                        ลงเป็น modal แทน แล้วค่อยขยายทีหลัง
+                    </li>
+                    <li>
+                        ถ้าอยาก ให้เห็นงานทุกเช้า ก็ขยาย sidebar ให้มี summary
+                        “Progress: 3/5 tasks” ด้านบน
+                    </li>
+                </ul>
+            </h4>
+        </details>
+
+       <details>
+    <summary>🎯 Phase 1 Overview</summary>
+    <div class="phase">
+        <p>โฟกัส chat&calendar flow ให้เสถียรก่อนแล้วกันครับ</p>
+        <p>แล้วพวกข้อมูลเวลา user log in จะไปอยู่ไหน เก็บไว้ที่ไหน พวก task ที่ user จะมาดูในแต่ละวันหลังจากที่มีการกำหนดแล้ว เข้ามา login เพื่อจะดู progress ด้วย พวกนี้จะเก็บไว้ที่ไหน</p>
+        <p>แล้วถ้าผมต้องการจะเพิ่ม DB ทีหลังอย่างที่คุณว่าต้องทำยังไง ผมอยากใช้ PostgreQL ในอนาคตอย่างนี้</p>
+
+        <ol>
+            <li>
+                <strong>Google OAuth Login</strong>
+                <ul>
+                    <li>ลงทะเบียน OAuth App ใน Google Cloud Console → ได้ <code>CLIENT_ID</code> กับ <code>CLIENT_SECRET</code></li>
+                    <li>ใช้ <code>passport-google-oauth20</code> กับ <code>express-session</code> เพื่อให้ user "Sign in with Google"</li>
+                    <li>หลังยืนยันตัวตน → เก็บ <code>req.session.user = { id, name, email }</code> ไว้ใน memory-store</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Chat UI & Agent API</strong>
+                <ul>
+                    <li>หน้า <code>/devsprint</code> (HTML + Vanilla JS) หรือ React (ถ้ายากมาก) เชื่อมกับ endpoint <code>/api/chat</code></li>
+                    <li><code>/api/chat</code> อ่าน <code>req.session.user</code> เพื่อรู้ว่าใครคุยอยู่ → ส่ง prompt + history เข้า OpenAI</li>
+                    <li>Agent ตอบกลับเป็นข้อความที่ใช้ให้ user พอใจตามคำสั่งได้</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Task State per User</strong>
+                <ul>
+                    <li>เก็บ <code>sessions[sessionId].tasks</code> ใน-memory object ตาม session ID</li>
+                    <li>ทั้งนั้น <code>getUserData(sessionId)</code> / <code>saveUserData(sessionId)</code> จัดการ state ได้จาก abstraction layer เดียว</li>
+                </ul>
+            </li>
+            <li>
+                <strong>logProgress → Calendar Webhook</strong>
+                <ul>
+                    <li>เมื่อ user พิมพ์ "เสร็จ Task X" → Agent อัปเดต state → POST ข้อมูลงานไป <code>/api/webhook</code></li>
+                    <li><code>/api/webhook</code> ส่ง payload ไปยัง n8n Webhook → n8n สร้าง Event ใน Google Calendar</li>
+                </ul>
+            </li>
+            <li>
+                <strong>No DB ในช่วง Phase 1</strong>
+                <ul>
+                    <li>ทุกอย่างเอาอยู่บน in-memory session store</li>
+                    <li>ถ้า server รีสตาร์ท ข้อมูลหาย แต่แลกกับการ deploy ได้เร็วสุด</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    <div>
+        <h4>🚀 Next Steps (เริ่มจริงจัง)</h4>
+        <ul>
+            <li>เซ็ต Google OAuth (Client ID/Secret + redirect URI <code>/auth/google/callback</code>)</li>
+            <li>ติดตั้ง <code>passport-google-oauth20</code> + ตั้ง express-session</li>
+            <li>สร้างปุ่ม “Sign in with Google” ในหน้า <code>/devsprint</code> → ดึง user profile มาเก็บใน session</li>
+        </ul>
+        <p>หลังนั้น Chat & Calendar flow ก็พร้อมเล่น 🎉</p>
+        <p>พอ Phase 1 ใช้งานได้เสถียร เราค่อยคุย Phase 2 (PostgreSQL, persistence) อีกที</p>
+    </div>
+        </details>
+
+        <details>
+            <summary>Phase 1: MVP (No Database)</summary>
+            <div class="phase">
+                <ol>
+                    <li>
+                        <b>Google OAuth Login:</b> Sign in with Google, store
+                        user in session.
+                    </li>
+                    <li>
+                        <b>Chat UI & Agent API:</b> Chat interface connects to
+                        <code>/api/chat</code> endpoint, OpenAI integration.
+                    </li>
+                    <li>
+                        <b>Task State per User:</b> In-memory session object
+                        (<code>sessions[sessionId].tasks</code>).
+                    </li>
+                    <li>
+                        <b>Log Progress & Calendar:</b> Mark task done, send to
+                        <code>/api/webhook</code> for n8n → Google Calendar.
+                    </li>
+                    <li>
+                        <b>No Database:</b> All state is in-memory for fast
+                        iteration. Data lost on server restart.
+                    </li>
+                </ol>
+                <h2>🔍 ข้อดี & ข้อจำกัด</h2>
+                <table>
+                    <tr>
+                        <th>ประเด็น</th>
+                        <th>HTML + Vanilla JS + Node.js (Express)</th>
+                        <th>Next.js</th>
+                    </tr>
+                    <tr>
+                        <td><b>ความเรียบง่าย</b></td>
+                        <td>
+                            เบสิคสุด เริ่มต้นไว ไม่ต้องเรียน framework เพิ่ม
+                        </td>
+                        <td>มี built-in routing, API routes, SSR</td>
+                    </tr>
+                    <tr>
+                        <td><b>ปรับจูนได้เต็มที่</b></td>
+                        <td>คุณคุมทุกอณูของโค้ดเอง</td>
+                        <td>ต้องยอม “เดินตามกติกา” ของ Next.js</td>
+                    </tr>
+                    <tr>
+                        <td><b>เริ่มเร็ว–เห็นผล</b></td>
+                        <td>
+                            แค่สร้าง <code>index.html</code> +
+                            <code>script.js</code> + <code>server.js</code>
+                        </td>
+                        <td>ต้องติดตั้ง config, pages structure</td>
+                    </tr>
+                    <tr>
+                        <td><b>ฟีเจอร์ขั้นสูง</b></td>
+                        <td>เองหมดทั้ง SSR, CORS, Authentication ฯลฯ</td>
+                        <td>Next.js จัดให้หลายอย่างพร้อมใช้</td>
+                    </tr>
+                    <tr>
+                        <td><b>การ deploy</b></td>
+                        <td>โยนขึ้น Heroku / Railway / VPS ก็รันได้เลย</td>
+                        <td>Vercel optimized, แต่ Heroku ก็รองรับ</td>
+                    </tr>
+                </table>
+                <p>
+                    <b>Project Structure Example:</b>
+                </p>
+                <pre>
+           /devsprint/
+           ├── public/
+           │   └── index.html   ← หน้า chat UI
+           ├── src/
+           │   ├── client.js     ← จัดการ DOM, fetch API
+           │   └── styles.css    ← ถ้าใช้ CSS แบบแยกไฟล์
+           ├── server/ 
+           │   ├── server.js     ← Express app
+           │   └── agent.js      ← ฟังก์ชัน splitProject, getTodaysTasks, logProgress
+           ├── package.json
+           └── .env              ← เก็บ OPENAI_API_KEY, N8N_WEBHOOK_URL
+      </pre
+                >
+          
+            <div class="code-section">
+                <h3>1. public/index.html</h3>
+                <p>Basic chat interface with minimal HTML structure:</p>
+                <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;title&gt;DevSprint AI&lt;/title&gt;
+  &lt;link rel="stylesheet" href="./styles.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id="chat"&gt;
+    &lt;ul id="messages"&gt;&lt;/ul&gt;
+    &lt;input id="input" placeholder="พิมพ์ข้อความ..." autofocus /&gt;
+    &lt;button id="send"&gt;Send&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;script src="../src/client.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+
+            <div class="code-section">
+                <h3>2. src/client.js</h3>
+                <p>Client-side JavaScript for handling chat interactions:</p>
+                <pre><code class="language-javascript">const msgs = document.getElementById('messages');
+const input = document.getElementById('input');
+const btn   = document.getElementById('send');
+
+btn.addEventListener('click', async () => {
+  const text = input.value.trim();
+  if (!text) return;
+  addMessage('You: ' + text);
+  input.value = '';
+
+  const res = await fetch('/api/chat', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ message: text })
+  });
+  const { reply } = await res.json();
+  addMessage('AI: ' + reply);
+});
+
+function addMessage(text) {
+  const li = document.createElement('li');
+  li.textContent = text;
+  msgs.appendChild(li);
+  window.scrollTo(0, document.body.scrollHeight);
+}</code></pre>
+            </div>
+
+            <div class="code-section">
+                <h3>3. server/server.js</h3>
+                <p>Express server setup with chat and webhook endpoints:</p>
+                <pre><code class="language-javascript">require('dotenv').config();
+const express = require('express');
+const bodyParser = require('body-parser');
+const agent = require('./agent');
+
+const app = express();
+app.use(express.static('public'));
+app.use(bodyParser.json());
+
+app.post('/api/chat', async (req, res) => {
+  const { message } = req.body;
+  const reply = await agent.handleMessage(message);
+  res.json({ reply });
+});
+
+app.post('/api/webhook', agent.handleWebhook);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));</code></pre>
+            </div>
+
+            <div class="code-section">
+                <h3>4. server/agent.js</h3>
+                <p>
+                    AI agent logic for processing messages and managing tasks:
+                </p>
+                <pre><code class="language-javascript">const { OpenAI } = require('openai');
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const { createCalendarPayload } = require('../lib/calendar');
+
+let state = { projects: {}, tasks: {} };
+
+async function handleMessage(msg) {
+  if (msg.startsWith('split:')) {
+    const desc = msg.replace('split:', '');
+    const tasks = await splitProject(desc);
+    return `✅ แยกเป็น tasks:\n- ` + tasks.join('\n- ');
+  }
+  return "ผมยังไม่เข้าใจคำสั่งนะครับ ลองพิมพ์ 'split: &lt;คำอธิบายโปรเจกต์&gt;' ดูครับ";
+}
+
+async function splitProject(description) {
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [
+      { role:'system', content:'You are a task splitter.' },
+      { role:'user', content:`Split this into 5 work items: ${description}` }
+    ]
+  });
+  const text = completion.choices[0].message.content;
+  return text.split('\n').map(l => l.replace(/^- /,'').trim()).filter(Boolean);
+}
+
+async function handleWebhook(req, res) {
+  res.sendStatus(200);
+}
+
+module.exports = { handleMessage, handleWebhook };</code></pre>
+            </div>
+
+            <div class="code-section">
+                <h3>Development Roadmap</h3>
+                <table>
+                    <tr>
+                        <th>Day</th>
+                        <th>Main Tasks</th>
+                    </tr>
+                    <tr>
+                        <td>1-2</td>
+                        <td>Scaffold + Static HTML/JS + Express server</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Chat UI ↔ /api/chat + OpenAI integration</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>splitProject function + Prompt Template</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>getTodaysTasks + in-memory state</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>logProgress + /api/webhook</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>n8n workflow → Google Calendar</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>UI polish + error handling</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>UX: confirm/edit tasks</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Beta test + deploy (Heroku/Railway)</td>
+                    </tr>
+                </table>
+                
+            </div>
+            <div><h4>🙋‍♂️ สรุป</h4>
+                 <ul>
+                    <li>ใช้ HTML + Vanilla JS ฝั่งหน้า, Node.js + Express ฝั่งหลัง แทน Next.js ได้</li>
+                    <li>โครงสร้างโปรเจกต์ง่ายกว่า เริ่มต้นเร็ว เห็นผลทันที</li>
+                    <li>n8n integration ก็ใช้ /api/webhook เหมือนเดิม ไม่เปลี่ยน</li>
+            </ul></div>
+        </details>
+
+
+
+        <details>
+            <summary>Phase 1 Roadmap</summary>
+            <table class="roadmap-table">
+    <tr>
+        <th>Day</th>
+        <th>Main Tasks</th>
+        <th>Success Criteria</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+            <strong>Scaffold & Env Setup</strong>
+            <ul>
+                <li>Create project folder (<code>devsprint</code>)</li>
+                <li>Initialize <code>package.json</code></li>
+                <li>Install dependencies:
+                    <code>express</code>, 
+                    <code>body-parser</code>, 
+                    <code>express-session</code>, 
+                    <code>passport-google-oauth20</code>, 
+                    <code>dotenv</code>
+                </li>
+                <li>Create <code>.env</code> with required keys:
+                    <ul>
+                        <li><code>GOOGLE_CLIENT_ID</code></li>
+                        <li><code>GOOGLE_CLIENT_SECRET</code></li>
+                        <li><code>SESSION_SECRET</code></li>
+                    </ul>
+                </li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li><code>npm start</code> runs without errors</li>
+                <li><code>.env</code> loads correctly (test <code>process.env.SESSION_SECRET</code>)</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+            <strong>Google OAuth Routes</strong>
+            <ul>
+                <li>Setup Passport Google Strategy in <code>server/server.js</code></li>
+                <li>Create routes <code>/auth/google</code> and <code>/auth/google/callback</code></li>
+                <li>Store profile in <code>req.session.user</code></li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li>Access <code>/auth/google</code> → Google consent screen</li>
+                <li>After callback → <code>req.session.user</code> contains <code>{ id, name, email }</code></li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+            <strong>Login UI & Session</strong>
+            <ul>
+                <li>Create login button in <code>public/index.html</code></li>
+                <li>Serve <code>public/</code> folder with Express</li>
+                <li>Create <code>/logout</code> route to clear session</li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li>Click Login → Google auth → Return with loaded page</li>
+                <li><code>/logout</code> successfully clears session</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>
+            <strong>Basic Chat UI</strong>
+            <ul>
+                <li>Add chat components to <code>index.html</code></li>
+                <li>Create <code>src/client.js</code> for <code>/api/chat</code> POST requests</li>
+                <li>Setup stub endpoint with mock responses</li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li>UI shows user messages and mock replies</li>
+                <li>No console errors</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>
+            <strong>OpenAI Integration</strong>
+            <ul>
+                <li>Install OpenAI SDK</li>
+                <li>Create <code>splitProject()</code> in <code>server/agent.js</code></li>
+                <li>Handle <code>split:</code> command in <code>/api/chat</code></li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li>Type "split: create TODO app" → Get 3-5 tasks back in chat</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>
+            <strong>State Management</strong>
+            <ul>
+                <li>Create <code>server/state.js</code> for in-memory sessions</li>
+                <li>Implement storage abstraction (<code>getUserData</code>/<code>saveUserData</code>)</li>
+                <li>Add <code>today</code> and <code>done X</code> commands</li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li><code>today</code> shows only due tasks</li>
+                <li><code>done 2</code> updates task #2 status and refreshes today's list</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>7</td>
+        <td>
+            <strong>Webhook Endpoint</strong>
+            <ul>
+                <li>Create <code>/api/webhook</code> route</li>
+                <li>Handle payload and forward to n8n</li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li>POST to <code>/api/webhook</code> returns 200</li>
+                <li>n8n receives payload (test with Postman)</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>8</td>
+        <td>
+            <strong>n8n & Calendar Integration</strong>
+            <ul>
+                <li>Setup n8n Webhook Node (<code>/devsprint-calendar</code>)</li>
+                <li>Configure Google Calendar Node</li>
+                <li>Test flow with payload</li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li>Postman trigger → Event appears in Google Calendar</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>9</td>
+        <td>
+            <strong>Connect Chat to Calendar</strong>
+            <ul>
+                <li>Update <code>logProgress()</code> to call webhook</li>
+                <li>Test chat commands with calendar integration</li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li>Type "done 1" → Chat confirms + Calendar event created</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>10</td>
+        <td>
+            <strong>Polish & Deploy</strong>
+            <ul>
+                <li>Add loading states and error handling</li>
+                <li>Implement responsive CSS</li>
+                <li>Deploy to Heroku/Railway</li>
+                <li>Complete end-to-end testing</li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li>No uncaught errors</li>
+                <li>Mobile-responsive UI</li>
+                <li>Deployed and fully functional</li>
+            </ul>
+        </td>
+    </tr>
+</table>
+        </details>
+
+        <details>
+    <summary>Data Storage: MVP Approach</summary>
+    <div class="db">
+        <h3>Current MVP Storage Options</h3>
+        <ul>
+            <li>
+                <b>In-Memory State:</b> Fastest, no setup, but data lost on restart.
+            </li>
+            <li>
+                <b>Flat-File (JSON):</b> Simple persistence, but not for heavy concurrent use.
+            </li>
+            <li>
+                <b>Lightweight DB (Future):</b> SQLite, Redis, or hosted (Supabase/Firebase) for persistence.
+            </li>
+        </ul>
+
+        <h3>สำหรับ MVP ระยะแรก</h3>
+        <p>เราไม่จำเป็นต้องมี database จริงจังก็ได้ครับ เพราะ:</p>
+
+        <div class="storage-options">
+            <div class="option">
+                <h4>1. In-Memory State</h4>
+                <ul>
+                    <li><strong>ข้อดี:</strong> เซ็ตอัปเร็วสุด ไม่ต้องติดตั้งหรือ config อะไรเลย</li>
+                    <li><strong>ข้อเสีย:</strong> ข้อมูลจะหายเมื่อ restart เซิร์ฟเวอร์</li>
+                </ul>
+            </div>
+
+            <div class="option">
+                <h4>2. Flat-File Storage (JSON)</h4>
+                <ul>
+                    <li><strong>ข้อดี:</strong> ยังคงตั้งค่าเบาๆ แต่ข้อมูลจะเก็บอยู่ในไฟล์ (e.g. <code>data.json</code>)</li>
+                    <li><strong>ข้อเสีย:</strong> Concurrent write อาจชนกัน ถ้า user เยอะอาจต้องระวัง locking</li>
+                </ul>
+            </div>
+
+            <div class="option">
+                <h4>3. Lightweight DB Option</h4>
+                <ul>
+                    <li><strong>SQLite:</strong> แค่ติดตั้ง npm package แล้วใช้ง่าย เหมือนมีไฟล์เดี่ยวๆ เป็น database</li>
+                    <li><strong>Redis:</strong> เหมาะสำหรับ caching/state แบบชั่วคราว พร้อมใช้กับ n8n ต่อไป</li>
+                    <li><strong>Supabase / Firebase:</strong> ถ้าต้องการ hosted service พร้อม auth และ dashboard</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>🎯 คำแนะนำสำหรับ DevSprint AI MVP</h3>
+        <div class="recommendation">
+            <h4>ช่วง 1–7 วันแรก</h4>
+            <ul>
+                <li>ให้ใช้ <strong>in-memory state</strong> (object เก็บในตัวแอป)</li>
+                <li>ทำให้เราโฟกัสที่ logic ของ Agent, Chat UI, Webhook</li>
+                <li>พอระบบพร้อม deploy เบื้องต้นบน Heroku/Railway เราก็ test ได้ทันที</li>
+            </ul>
+
+            <h4>หลังจาก Beta Test (Day 8+)</h4>
+            <ul>
+                <li>ถ้าพบว่าอยากเก็บข้อมูลข้ามรอบการ deploy หรือให้หลายคนใช้พร้อมกัน</li>
+                <li>ค่อยเพิ่ม <strong>SQLite</strong> หรือ <strong>Supabase</strong> เพื่อ persistence</li>
+                <li>โค้ดเปลี่ยนไม่เยอะ — แค่เปลี่ยน layer ที่อ่าน/เขียน state จาก in-memory ไปเป็น DB</li>
+            </ul>
+        </div>
+
+        <details>
+            <summary>Phase 2: Persistent State & Google Calendar API</summary>
+            <div class="phase">
+                <ol>
+                    <li>
+                        <b>Google OAuth & Calendar API:</b> Enable Calendar API,
+                        use <code>googleapis</code> library.
+                    </li>
+                    <li>
+                        <b>Token Storage:</b> Store <code>access_token</code>,
+                        <code>refresh_token</code> in PostgreSQL (via Prisma).
+                    </li>
+                    <li>
+                        <b>Agent Logic:</b> Create calendar events directly
+                        after task split/log progress.
+                    </li>
+                    <li>
+                        <b>Persistent State:</b> All user/project/task data in
+                        PostgreSQL.
+                    </li>
+                </ol>
+                <p>
+                    <b>Phase 2 Roadmap (5–7 days):</b>
+                </p>
+                <ul>
+                    <li>Day 1: Google OAuth & callback flow</li>
+                    <li>Day 2: Add Prisma schema, migrate DB</li>
+                    <li>Day 3: Storage layer for tokens</li>
+                    <li>Day 4: Calendar event creation logic</li>
+                    <li>Day 5: Integrate with agent flow</li>
+                    <li>Day 6: Test edge cases (expired token, API fail)</li>
+                    <li>Day 7: UI: Calendar sync status, error handling</li>
+                </ul>
+            </div>
+              </div>
+        </details>
+
+      <details>
+    <summary>Phase 2</summary>
+    <div class="phase">
+        <h2>🏗️ สถาปัตยกรรมภาพรวม Phase 2</h2>
+        
+        <ol>
+            <li><strong>OAuth 2.0 with Google Calendar API</strong></li>
+            <li><strong>Token Storage (PostgreSQL)</strong></li>
+            <li><strong>Agent Logic: สั่งสร้าง Event โดยตรง</strong></li>
+            <li><strong>Persistent State (PostgreSQL)</strong></li>
+        </ol>
+
+        <section>
+            <h3>1. ตั้งค่า Google OAuth & Calendar API</h3>
+            <div class="setup-section">
+                <h4>Google Cloud Console</h4>
+                <ul>
+                    <li>เปิดใช้งาน Google Calendar API</li>
+                    <li>สร้าง OAuth 2.0 Client ID (Redirect URI → <code>https://your-domain.com/auth/google/callback</code>)</li>
+                </ul>
+
+                <h4>Required Scopes</h4>
+                <pre><code>https://www.googleapis.com/auth/calendar.events
+https://www.googleapis.com/auth/userinfo.profile
+https://www.googleapis.com/auth/userinfo.email</code></pre>
+
+                <p><strong>Library:</strong> ใช้ <code>googleapis</code> บน Node.js</p>
+            </div>
+        </section>
+
+        <section>
+            <h3>2. เก็บ Tokens ใน PostgreSQL</h3>
+            <div class="db-section">
+                <p>เพิ่มตาราง <code>UserSession</code> เดิม ให้มีคอลัมน์</p>
+                <pre><code class="language-prisma">model UserSession {
+  id            String   @id @default(cuid())
+  sessionId     String   @unique
+  project       String?
+  tasks         Json
+  accessToken   String?
+  refreshToken  String?
+  tokenExpiry   DateTime?
+  updatedAt     DateTime @updatedAt
+}</code></pre>
+                <p>Flow: หลัง Login → ดึง <code>access_token</code> + <code>refresh_token</code> มา แล้วอัปเดตใน DB (Prisma)</p>
+            </div>
+        </section>
+
+        <section>
+            <h3>3. Agent Logic: สร้าง Calendar Event</h3>
+            <div class="code-section">
+                <h4>1. Initialize OAuth2Client</h4>
+                <pre><code class="language-javascript">const { google } = require('googleapis');
+const oAuth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  'https://your-domain.com/auth/google/callback'
+);</code></pre>
+
+                <h4>2. Set Credentials จาก DB</h4>
+                <pre><code class="language-javascript">// ดึงจาก storage.getUserData(sessionId)
+oAuth2Client.setCredentials({
+  access_token: user.accessToken,
+  refresh_token: user.refreshToken,
+  expiry_date: user.tokenExpiry,
+});
+const calendar = google.calendar({ version: 'v3', auth: oAuth2Client });</code></pre>
+
+                <h4>3. สร้าง Event เมื่อแตกงานเสร็จ/Log Progress</h4>
+                <pre><code class="language-javascript">async function createCalendarEvent(sessionId, task) {
+  // ดึง user data,ตั้ง oauth client
+  const { accessToken, refreshToken, tokenExpiry } = await getUserTokens(sessionId);
+  oAuth2Client.setCredentials({ 
+    access_token: accessToken, 
+    refresh_token: refreshToken, 
+    expiry_date: tokenExpiry 
+  });
+
+  // ถ้า access expired → googleapis จะ refresh อัตโนมัติ
+  oAuth2Client.on('tokens', tokens => {
+    if (tokens.refresh_token) saveRefreshToken(sessionId, tokens.refresh_token);
+    if (tokens.access_token) saveAccessToken(sessionId, tokens.access_token, tokens.expiry_date);
+  });
+
+  // สั่งสร้าง event
+  await calendar.events.insert({
+    calendarId: 'primary',
+    requestBody: {
+      summary: `DevSprint: ${task.title}`,
+      description: task.description || '',
+      start:  { dateTime: task.dueDate },
+      end:    { dateTime: new Date(new Date(task.dueDate).getTime() + 30*60000).toISOString() },
+    },
+  });
+}</code></pre>
+
+                <h4>4. ผนวกเข้ากับ Agent Flow</h4>
+                <ul>
+                    <li>หลัง <code>splitProject</code>: สร้าง event แต่ละ task → <code>calendar.createCalendarEvent(...)</code></li>
+                    <li>หลัง <code>logProgress</code> ก็อาจอัปเดต event หรือสร้าง reminder ใหม่</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h3>4. Persistent State & Scale</h3>
+            <ul>
+                <li>ทุก state (projects, tasks, tokens) อยู่ใน PostgreSQL ผ่าน Prisma</li>
+                <li>เมื่อเซิร์ฟเวอร์รีสตาร์ท ข้อมูลไม่หาย พร้อมรองรับผู้ใช้หลายคน</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>📅 สรุป Roadmap Phase 2 (5–7 วัน)</h3>
+            <table class="roadmap-table">
+                <tr>
+                    <th>วัน</th>
+                    <th>งานหลัก</th>
+                </tr>
+                <tr>
+                    <td>Day 1</td>
+                    <td>Google OAuth Setup & Callback Flow (Express + Passport)</td>
+                </tr>
+                <tr>
+                    <td>Day 2</td>
+                    <td>เพิ่ม Prisma Schema (tokens) + migrate DB</td>
+                </tr>
+                <tr>
+                    <td>Day 3</td>
+                    <td>เขียน storage layer → เก็บ/อัปเดต access & refresh</td>
+                </tr>
+                <tr>
+                    <td>Day 4</td>
+                    <td>สร้างฟังก์ชัน <code>createCalendarEvent</code> + auto-refresh token</td>
+                </tr>
+                <tr>
+                    <td>Day 5</td>
+                    <td>ผนวกกับ <code>splitProject</code> & <code>logProgress</code></td>
+                </tr>
+                <tr>
+                    <td>Day 6</td>
+                    <td>ทดสอบหลายกรณี (expired token, failed API)</td>
+                </tr>
+                <tr>
+                    <td>Day 7</td>
+                    <td>UI: แสดงสถานะ Calendar sync + error handling</td>
+                </tr>
+            </table>
+        </section>
+    </div>
+</details>
+
+        <details>
+            <summary>How to Add PostgreSQL Later</summary>
+            <div class="db">
+                <ol>
+                    <li>Add Prisma or your ORM of choice.</li>
+                    <li>Define schema for users, sessions, tasks, tokens.</li>
+                    <li>
+                        Replace in-memory <code>getUserData</code>/<code
+                            >saveUserData</code
+                        >
+                        with DB-backed versions.
+                    </li>
+                    <li>Migrate state logic to use persistent storage.</li>
+                    <li>Test for multi-user, multi-session support.</li>
+                </ol>
+                <p>
+                    <b>Tip:</b> The abstraction layer makes it easy to swap
+                    storage without rewriting agent logic.
+                </p>
+            </div>
+        </details>
+
+        <details>
+            <summary>Summary</summary>
+            <ul>
+                <li>
+                    Phase 1: Fast MVP, no DB, in-memory state, Google login,
+                    chat, calendar sync via n8n.
+                </li>
+                <li>
+                    Phase 2: Add PostgreSQL, persistent state, direct Google
+                    Calendar API integration.
+                </li>
+                <li>
+                    Modular structure: easy to extend, swap storage, or add
+                    features.
+                </li>
+            </ul>
+            <p>
+                <b
+                    >Ready to start? Begin with
+                    <code>public/index.html</code> and
+                    <code>server/server.js</code> as your base!</b
+                >
+            </p>
+        </details>
+    </body>
+</html>
