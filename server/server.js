@@ -1,7 +1,10 @@
 // Express app
-require('dotenv').config(); //โหลดค่าจาก .env เข้ามาใช้งาน
+import dotenv from 'dotenv';
+import express from 'express';
 
-const express = require('express');
+dotenv.config(); //โหลดค่าจาก .env เข้ามาใช้งาน
+
+// Initialize Express
 const app = express();
 const PORT = process.env.PORT || 3000;
 
